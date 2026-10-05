@@ -1,6 +1,7 @@
 (function(){
 var menu=document.querySelector('.menu'),nav=document.getElementById('nav');
-if(menu&&nav){menu.addEventListener('click',function(){var open=nav.classList.toggle('open');menu.setAttribute('aria-expanded',open?'true':'false');});}
+function setNav(open){nav.classList.toggle('open',open);document.body.classList.toggle('navopen',open);menu.setAttribute('aria-expanded',open?'true':'false');menu.textContent=open?'Close':'Menu';if(open){nav.scrollTop=0;var cur=nav.querySelector('.on');if(cur&&cur.scrollIntoView){cur.scrollIntoView({block:'center'});}}}
+if(menu&&nav){menu.addEventListener('click',function(){setNav(!nav.classList.contains('open'));});document.addEventListener('keydown',function(e){if(e.key==='Escape'&&nav.classList.contains('open')){setNav(false);menu.focus();}});}
 var on=document.querySelector('.nav .on');if(on&&nav&&window.innerWidth>860){nav.scrollTop=on.offsetTop-nav.clientHeight/2;}
 var data=document.getElementById('index');if(!data){return;}
 var idx=JSON.parse(data.textContent),input=document.getElementById('q'),list=document.getElementById('results'),status=document.getElementById('status');
