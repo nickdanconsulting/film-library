@@ -7,7 +7,7 @@ var data=document.getElementById('index');if(!data){return;}
 var idx=JSON.parse(data.textContent),input=document.getElementById('q'),list=document.getElementById('results'),status=document.getElementById('status');
 function fold(s){return s.normalize('NFKD').replace(/[̀-ͯ]/g,'').toLowerCase();}
 idx.pages.forEach(function(p){p.ft=fold(p.t);p.fk=fold(p.t+' '+p.d+' '+p.k);});
-idx.terms.forEach(function(t){t.ft=fold(t.t);});
+idx.terms.forEach(function(t){t.ft=fold(t.t);});(idx.people||[]).forEach(function(t){t.ft=fold(t.t);});
 function score(ft,q){if(ft===q)return 100;if(ft.indexOf(q)===0)return 60;if(ft.indexOf(' '+q)>=0)return 40;if(ft.indexOf(q)>=0)return 20;return 0;}
 function run(){
  var q=fold(input.value.trim());list.innerHTML='';
@@ -15,6 +15,7 @@ function run(){
  var hits=[];
  idx.pages.forEach(function(p){var s=score(p.ft,q)*2;if(!s&&p.fk.indexOf(q)>=0)s=15;if(s)hits.push({s:s+5,t:p.t,u:p.u,d:p.d,kind:'Page'});});
  idx.terms.forEach(function(t){var s=score(t.ft,q);if(s)hits.push({s:s,t:t.t,u:t.u,d:'',kind:'Glossary'});});
+ (idx.people||[]).forEach(function(t){var s=score(t.ft,q);if(s)hits.push({s:s-1,t:t.t,u:t.u,d:t.n+' sources',kind:'People and gear'});});
  hits.sort(function(a,b){return b.s-a.s||a.t.length-b.t.length;});
  var shown=hits.slice(0,80);
  status.textContent=hits.length?(hits.length+' result'+(hits.length===1?'':'s')+(hits.length>80?', showing the best 80':'')):'Nothing found. Try a shorter word.';
