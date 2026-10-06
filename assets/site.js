@@ -19,7 +19,7 @@ function run(){
  hits.sort(function(a,b){return b.s-a.s||a.t.length-b.t.length;});
  var shown=hits.slice(0,80);
  status.textContent=hits.length?(hits.length+' result'+(hits.length===1?'':'s')+(hits.length>80?', showing the best 80':'')):'Nothing found. Try a shorter word.';
- shown.forEach(function(h){var li=document.createElement('li'),a=document.createElement('a');a.href=h.u;a.textContent=h.t;li.appendChild(a);var sm=document.createElement('small');sm.textContent=h.kind+(h.d?' · '+h.d:'');li.appendChild(sm);list.appendChild(li);});
+ shown.forEach(function(h){var li=document.createElement('li'),a=document.createElement('a');a.href=h.u;a.textContent=h.t;li.appendChild(a);var sm=document.createElement('small');sm.textContent=h.kind+(h.d?', '+h.d:'');li.appendChild(sm);list.appendChild(li);});
 }
 var params=new URLSearchParams(location.search);if(params.get('q')){input.value=params.get('q');}
 input.addEventListener('input',function(){var u=new URL(location.href);u.searchParams.set('q',input.value);history.replaceState(null,'',u);run();});
